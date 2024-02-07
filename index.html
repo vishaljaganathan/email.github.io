@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>text input</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="inputArea">
+    <textarea id="textInput" placeholder="Enter paragraph with email and URL combined"></textarea>
+    <div class="allButton">
+    <button id="getNameByEmail">Get Name by Email</button>
+    <button id="getEmail">Get Email</button>
+    <button id="getDomainName">Get Domain Name</button>
+    </div>
+    <div id="output"></div>
+    </div>
+</body>
+</html>
+
+<script>
+  function getEmails() {
+            var text = document.getElementById("textInput").value;
+            var emails = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g);
+            if (emails) {
+                return emails;
+            } else {
+                return [];
+            }
+        }
+
+        function getNames() {
+            var emails = getEmails();
+            var names = [];
+            emails.forEach(function(email) {
+                var name = email.split('@')[0];
+                if (name.length > 16) {
+                    name = name.substring(0, 16) + '...';
+                }
+                names.push(name);
+            });
+            return names;
+        }
+
+        function getDomains() {
+            var text = document.getElementById("textInput").value;
+            var urls = text.match(/\b(?:https?|ftp):\/\/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]/g);
+            var domains = [];
+            if (urls) {
+                urls.forEach(function(url) {
+                    var domain = new URL(url).hostname;
+                    domains.push(domain);
+                });
+            }
+            return domains;
+        }
+
+        document.getElementById("getNameByEmail").addEventListener("click", function() {
+            var names = getNames();
+            if (names.length > 0) {
+                removeDuplicates(names);
+                document.getElementById("output").innerText = names.join("\n");
+            } else {
+                document.getElementById("output").innerText = "No names found!";
+            }
+        });
+
+        document.getElementById("getEmail").addEventListener("click", function() {
+            var emails = getEmails();
+            if (emails.length > 0) {
+                removeDuplicates(emails);
+                document.getElementById("output").innerText = emails.join("\n");
+            } else {
+                document.getElementById("output").innerText = "No emails found!";
+            }
+        });
+
+        document.getElementById("getDomainName").addEventListener("click", function() {
+            var domains = getDomains();
+            if (domains.length > 0) {
+                removeDuplicates(domains);
+                document.getElementById("output").innerText = domains.join("\n");
+            } else {
+                document.getElementById("output").innerText = "No domains found!";
+            }
+        });
+
+        function removeDuplicates(arr) {
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+            if (arr[i] === arr[j]) {
+                arr.splice(j, 1);
+                j--;
+            }
+        }
+    }
+}
+</script>
