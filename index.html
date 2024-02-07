@@ -31,25 +31,26 @@
         function getNames() {
             var emails = getEmails();
             var names = [];
-            emails.forEach(function(email) {
+            for (var i = 0; i < emails.length; i++) {
+                var email = emails[i];
                 var name = email.split('@')[0];
                 if (name.length > 16) {
                     name = name.substring(0, 16) + '...';
                 }
                 names.push(name);
-            });
+            }
             return names;
         }
-
         function getDomains() {
             var text = document.getElementById("textInput").value;
             var urls = text.match(/\b(?:https?|ftp):\/\/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]/g);
             var domains = [];
             if (urls) {
-                urls.forEach(function(url) {
+                for (var i = 0; i < urls.length; i++) {
+                    var url = urls[i];
                     var domain = new URL(url).hostname;
                     domains.push(domain);
-                });
+                }
             }
             return domains;
         }
@@ -84,7 +85,7 @@
             }
         });
 
-        function removeDuplicates(arr) {
+    function removeDuplicates(arr) {
     for (var i = 0; i < arr.length; i++) {
         for (var j = i + 1; j < arr.length; j++) {
             if (arr[i] === arr[j]) {
